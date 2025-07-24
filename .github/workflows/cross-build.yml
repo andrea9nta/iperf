@@ -57,6 +57,9 @@ jobs:
         arch: [x86_64, i686]  # use MSYS2 arch names directly
     
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
