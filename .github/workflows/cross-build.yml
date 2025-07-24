@@ -54,12 +54,12 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        arch: [x86_64, i686]  # use MSYS2 arch names directly
-    
+        arch: [x86_64, i686]  # 64-bit and 32-bit Windows
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
@@ -71,15 +71,15 @@ jobs:
             automake
             libtool
             make
-    
-      - name: Build with MSYS2
+
+      - name: Configure and Build
         shell: msys2 {0}
         run: |
           ./bootstrap.sh
           ./configure --host=${{ matrix.arch }}-w64-mingw32 LIBS="-lws2_32"
           make -j$(nproc)
 
-      - name: Upload artifact
+      - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
           name: iperf3-windows-${{ matrix.arch }}
