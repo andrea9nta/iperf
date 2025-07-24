@@ -76,7 +76,7 @@ jobs:
         shell: msys2 {0}
         run: |
           ./bootstrap.sh
-          ./configure --host=${{ matrix.arch }}-w64-mingw32
+          ./configure --host=${{ matrix.arch }}-w64-mingw32 LIBS="-lws2_32"
           make -j$(nproc)
 
       - name: Upload artifact
