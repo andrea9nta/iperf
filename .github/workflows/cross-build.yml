@@ -54,22 +54,21 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        arch: [x64, x86, arm64]
-
+        arch: [x86_64, i686]  # use MSYS2 arch names directly
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
+          msystem: MINGW${{ matrix.arch == 'x86_64' && '64' || '32' }}
           update: true
           install: >-
             base-devel
             mingw-w64-${{ matrix.arch }}-toolchain
-            autotools
+            automake
+            libtool
             make
-
+    
       - name: Build with MSYS2
         shell: msys2 {0}
         run: |
